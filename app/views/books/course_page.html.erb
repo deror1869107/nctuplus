@@ -1,0 +1,9 @@
+	<%= @books.to_json %>
+<% @books.each do |book| %>
+	<%= book.cover_image %>
+	<%= book.book_name %>
+	<%= book.price %>
+	<%= book.desc %>
+	<%= link_to book.book_name,edit_book_path(book),target:"blank"%>
+<% end %>
+

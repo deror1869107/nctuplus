@@ -150,9 +150,13 @@ end
 
 	
 #---------- book page ----------- 
-	post "books/google_book"
-  resources :books
-	
+
+	resources :books do
+		collection do
+			post "google_book"
+			get "course_page"
+		end
+	end
 	resources :departments, :except=>[:show, :destroy]
 
 

@@ -17,6 +17,12 @@ class BooksController < ApplicationController
 		@recent = BookTradeInfo.recents				
 	end
 	
+	def course_page
+		@q=BookTradeInfo.search({:book_trade_info_ctsships_course_teachership_id_eq=>params[:ct_id]})
+		@books=@q.result(distinct: true)
+		render :layout=>false
+	end
+	
   def google_book
 		self_books=Book.ransack({title_cont: params[:title]}).result.map{|book|{
 			:title=>book.title,

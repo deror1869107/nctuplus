@@ -12,7 +12,46 @@
 			stroke: #4caedb;
 			shape-rendering: crispEdges;
 		}
-
+		.btn_show,.btn_hide
+		{
+			border:1px #fff solid;
+			border-radius:5px;
+			color:#666;
+			text-align:center;
+			height:45px;
+			width:30%;
+			position:relative;
+			top:20px;
+			margin:auto;
+			line-height:45px;
+			
+			background:#ccc;
+		}
+		.btn_hide
+		{
+			top:30px;
+		}
+		
+		
+		.btn_show:hover,.btn_hide:hover
+		{		
+			background:#bbb;
+		}
+		.gradient
+		{
+			position:relative;
+			height:60px;
+			top:-10px;
+			
+			background: rgba(255,255,255,0.42);
+			background: -moz-linear-gradient(top, rgba(255,255,255,0.42) 0%, rgba(255,255,255,1) 100%);
+			background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0.42)), color-stop(100%, rgba(255,255,255,1)));
+			background: -webkit-linear-gradient(top, rgba(255,255,255,0.42) 0%, rgba(255,255,255,1) 100%);
+			background: -o-linear-gradient(top, rgba(255,255,255,0.42) 0%, rgba(255,255,255,1) 100%);
+			background: -ms-linear-gradient(top, rgba(255,255,255,0.42) 0%, rgba(255,255,255,1) 100%);
+			background: linear-gradient(to bottom, rgba(255,255,255,0.42) 0%, rgba(255,255,255,1) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );			
+		}
 		.bar {
 			fill: steelblue;
 		}
@@ -510,14 +549,16 @@
 	.opinion-btn
 	{
 		border:1px #fff solid;
+		border-radius:5px;
 		color:#fff;
 		text-align:center;
 		height:34px;
-		width:90px;
+		width:200px;
 		margin:auto;
 		line-height:34px;
 		transition:.2s linear;
 	}
+	
 	.opinion-btn:hover
 	{
 		background:rgba(0,0,0,.3);
@@ -683,7 +724,9 @@
 				<div id="discuss" class="panel-body">
 				</div>
 				<div id="files" class="panel-body">
-				</div>		
+				</div>	
+				<div id="books" class="panel-body">
+				</div>	
 			</div>
 		
 	</div>
@@ -781,12 +824,15 @@
 				$('body').scrollspy('refresh');
 				$("#files").load("/past_exams/course_page?ct_id=<%=@data[:course_teachership_id]%>", function() {
 					$('body').scrollspy('refresh');
-					$('body').scrollTo("#course-name",10,{offset:-80});
-					<% if params[:first_show]=="discussion" %>
-						$('body').scrollTo("#discuss",700,{offset:-60});
-					<% elsif params[:first_show]=="files" %>
-						$('body').scrollTo("#files",700,{offset:-60});
-					<% end %>
+					$("#books").load("/books/course_page?ct_id=<%=@data[:course_teachership_id]%>", function() {
+					
+						$('body').scrollTo("#course-name",10,{offset:-80});
+						<% if params[:first_show]=="discussion" %>
+							$('body').scrollTo("#discuss",700,{offset:-60});
+						<% elsif params[:first_show]=="files" %>
+							$('body').scrollTo("#files",700,{offset:-60});
+						<% end %>
+					});
 				});
 			});
 		});
