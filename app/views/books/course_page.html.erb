@@ -1,9 +1,37 @@
-	<%= @books.to_json %>
-<% @books.each do |book| %>
-	<%= book.cover_image %>
-	<%= book.book_name %>
-	<%= book.price %>
-	<%= book.desc %>
-	<%= link_to book.book_name,edit_book_path(book),target:"blank"%>
-<% end %>
+	<!--<%= @books.to_json %>-->
+	<div class="separation-line"></div>
+	<% if @books.count == 0%>
+		<p><h4>暫時沒有二手書!<br>	<%= link_to "我想賣二手書","/books/",target:"blank"%></h4></p>
+	<% else %>
+	<p><h4>你可能會想參考....</h4><br></p>
+	<% end %>
+	<div class="book_out">
+		
+		<div class="book_block col-md-10">
+			<div class="book_inside_block">
 
+			<% @books.each do |book| %>
+				<%= link_to (edit_book_path(book)) do%>
+				<div class="book_unit" >
+						<div class="pic"><%= book.cover_image %></div>
+						<div class="book_unit_black">
+							<div class="black_center"><%= book.book_name %><br>$<%= book.price %></div>
+						</div>
+					</div>
+				<% end %>	
+			<% end %>
+				
+				
+				
+			<!--<% @books.each do |book| %>
+				<%= book.cover_image %>
+				<%= book.book_name %>
+				<%= book.price %>
+				<%= book.desc %>
+				<%= link_to book.book_name,edit_book_path(book),target:"blank"%>
+			<% end %>-->
+			</div>
+		</div>
+		<div class="book_btn btn_left"><i class="fa fa-chevron-left" ></i></div>
+		<div class="book_btn btn_right"><i class="fa fa-chevron-right" ></i></div>
+	</div>
