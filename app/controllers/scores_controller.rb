@@ -1,8 +1,9 @@
 class ScoresController < ApplicationController
 	include ScoresHelper
 	include CourseMapsHelper
-	before_filter :checkE3Login, :only=>[:import_confirm, :import]
+	before_filter :checkE3Login, :only=>[:import_confirm, :import, :gpa]
 	
+
 	def import
 		if current_user.department.nil?
 			alertmesg("info",'Oops',"請先輸入您的系級，謝謝!")
@@ -89,5 +90,16 @@ class ScoresController < ApplicationController
 		end
 	end
 	def import_confirm	#import step2 choose cm, view only
+	end
+
+	def gpa
+		@normal_scores = current_user.normal_scores
+		@sum = 0.0
+		@sum2 = 0.0
+		@credit = 0
+
+		@sum60 = 0.0
+		@sum6043 = 0.0
+		@credit60 = 0
 	end
 end

@@ -192,11 +192,10 @@ aside {
 				font-size: 14px;
     }
 }
-.bg1
+.bg-image
 {
 	height:100%;
 	width:100%;
-	background: url(<%=asset_path("bg5.jpg")%>);
 	background-size:Cover;
 	display:block;
 	position:absolute;
@@ -204,22 +203,12 @@ aside {
 	left:0px;
 }
 
-.bg2
+.bg-black-blocker
 {
 	height:100%;
 	width:100%;
 	
 	background:#000;
-	display:block;
-	position:absolute;
-	top:0px;
-	left:0px;
-}
-.bg3
-{
-	height:100%;
-	width:100%;
-	background:rgba(0,0,0,.4);
 	display:block;
 	position:absolute;
 	top:0px;

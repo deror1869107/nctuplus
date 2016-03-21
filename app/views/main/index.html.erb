@@ -1,19 +1,45 @@
 <%= javascript_include_tag "new-index", "data-turbolinks-track" => false %>
 <%= stylesheet_link_tag "new-index", "data-turbolinks-track" => false %>
 <style>
-	#about{
-		-webkit-box-shadow: -3px -2px 79px -2px rgba(0,0,0,0.75);
-		-moz-box-shadow: -3px -2px 79px -2px rgba(0,0,0,0.75);
-		box-shadow: -3px -2px 79px -2px rgba(0,0,0,0.75);background:#222 100%
-	}
-	#intro{
-		background-color:#ffffff;
-	}
+#about{
+	-webkit-box-shadow: -3px -2px 79px -2px rgba(0,0,0,0.75);
+	-moz-box-shadow: -3px -2px 79px -2px rgba(0,0,0,0.75);
+	box-shadow: -3px -2px 79px -2px rgba(0,0,0,0.75);background:#222 100%
+}
+#intro{
+	background-color:#ffffff;
+}
+
+.main tr{ 
+	line-height: 1.6em; 
+}
+td.date{
+
+	text-align: right;
+}
+.glyphicon{
+	font-size: 0.1em;
+}
+#floating_link {
+     position: fixed;
+     right: 0;
+     top: 400px;
+     display: block;
+     width: 50px;
+     height: 125px;
+     text-indent: -10000px;
+     background-image: url(/my/image.jpg);
+     overflow: hidden;
+}
 </style>
-<div class="bg2"></div>
-<div class="bg1"></div>
-<div class="bg3"></div>
+
+<div class="bg-black-blocker"></div>
+<div class="bg-image"></div>
+
 <header>
+
+	<%=session[:zzz]%>
+
 	<div class="header-content text-left ">
 		<div class="container">
 		<div class="header-content-inner ">
@@ -26,27 +52,34 @@
 					<ul class="tabs">
 						<li>
 							<input type="radio" name="tabs" id="tab1" checked />
-							<label for="tab1"><h5>News</h5></label>
+							<label for="tab1"><h5>網站改版</h5></label>
 							<div id="tab-content1" class="tab-content">
-								<!--建議以Chrome 或 Firefox瀏覽<br>
-								∎　6/8 二手書系統上線-->
-								<br>
-								■ 02/23　梅竹賽       2016/02/26~2016/02/28<br>
-								■ 01/08　開學後加退選 2016/02/16~2016/02/26<br>
+								<table class="main" style="width:100%;">
+									<tbody>
+										<% @updates.each do |t| %>
+										<tr>
+											<td><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;<%= t.title %></td>
+											<td class="date"><small><font color="gray">20<%= t.created_at.strftime("%y/%m/%d") %></font></small></td>
+										</tr>
+										<% end %>
+									</tbody>
+								</table>
 							</div>
 						</li>
 						<li>
 							<input type="radio" name="tabs" id="tab2" />
-							<label for="tab2"><h5>Updates</h5></label>
+							<label for="tab2"><h5>最新消息</h5></label>
 							<div id="tab-content1" class="tab-content">
-								■ 02/23　「活動吧」功能上線<br>
-								■ 02/18　更新使用者「個人頁面」<br>
-								■ 01/23　新增二手書「排序功能」<br>
-								■ 01/03　新增「最新消息佈告欄」<br>
-								■ 01/03　新增「問題回報」功能<br>
-								■ 12/31　修正學分計算錯誤<br>
-								■ 12/25　課程資料更新至104下<br>
-								■ 12/08　新增「考古題&二手書」分類搜尋<br>
+								<table class="main" style="width:100%;">
+									<tbody>
+										<% @news.each do |t| %>
+										<tr>
+											<td><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;<%= t.title %></td>
+											<td class="date"><small><font color="gray">20<%= t.created_at.strftime("%y/%m/%d") %></font></small></td>
+										</tr>
+										<% end %>
+									</tbody>
+								</table>
 							</div>
 						</li>
 					</ul>
@@ -55,8 +88,7 @@
 				<div class="warning"></div>
 				<div class="btn-inner"></div>								
 			</div>
-			
-			
+
 			<div class="header-right ">
 				<h2 id="brief-intro">
 				</h2>
@@ -64,14 +96,14 @@
 				<% if !current_user %>
 					<a href="/login" class="btn btn-primary btn-xl page-scroll" style="font-size:20px;font-weight:300;margin-right:20px;" data-no-turbolink>登入</a>
 				<% end %>
-			</div>
-			
-    </div>
+			</div>	
+    	</div>
 		</div>
   </div>
 	<div class="text-center circle-bar"></div>
 </header>
-    
+
+
 <section id="intro" >
 	<div class="container">
 		<div class="row">
@@ -84,7 +116,7 @@
 		<div class="row">
 			<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 text-center gray-hover">
 				<div class="service-box clickable-hover function-box" href="/discusses">					
-						<%=image_tag "1.png",class:"width-200"%>
+						<%=image_tag asset_path("new-index/discuss-intro.png"),class:"width-200"%>
 						<h3>全校課程心得</h3>
 						<p class="text-muted" style="width:80%;margin:auto;">
 						選課前的好幫手，包羅歷年交大所有課程心得，舊文新文一次找齊，也包含課堂評價與歷屆成績，也歡迎同學一起討論。
@@ -93,7 +125,7 @@
 			</div>
 			<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 text-center gray-hover">
 				<div class="service-box clickable-hover function-box" href="/books">
-					<%=image_tag "6-1.png",class:"width-200"%>
+					<%=image_tag asset_path("new-index/book-intro.png"),class:"width-200"%>
 					<h3>二手書拍賣</h3>
 					
 					<p class="text-muted" style="width:80%;margin:auto;">
@@ -103,7 +135,7 @@
 			</div>
 			<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 text-center gray-hover">
 				<div class="service-box clickable-hover function-box" href="/user">
-					<%=image_tag "3.png",class:"width-200"%>
+					<%=image_tag asset_path("new-index/score-stat-intro.png"),class:"width-200"%>
 					<h3>畢業學分計算</h3>
 					
 					<p class="text-muted">今年可以畢業嗎？令人苦惱的畢業學分計算一次完成，把握大學最後的時間！</p>
@@ -111,7 +143,7 @@
 			</div>
 			<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 text-center gray-hover">
 				<div class="service-box clickable-hover function-box" href="/events">
-					<%=image_tag "5-1.png",class:"width-200"%>
+					<%=image_tag asset_path("new-index/event-intro.png"),class:"width-200"%>
 					<h3><strong>活動BAR！</strong></h3>
 					<h5 class="highlight-new-function"><strong>NCTU+ 新功能!</strong></h5>
 					<p class="text-muted">學校最近有什麼新活動？<br>快來加入活動！建立屬於自己的活動BAR!</p>
@@ -139,7 +171,6 @@
 </section>
 
 <script>
-
 $(document).ready(function(){
 	$('.navbar-collapse ul li a').click(function() {
 		$('.navbar-toggle:visible').click();
@@ -162,31 +193,27 @@ $(document).ready(function(){
 		re_win();
 	});
 	// Fit Text Plugin for Main Header
-    $("h1").fitText(
-        1.2, {
-            minFontSize: '35px',
-            maxFontSize: '65px'
-        }
-    );
-		var brief_intro =["即將畢業，給自己一個安心，<br>快登入使用算學分功能！","機會是留給有準備的人，<br>快登入使用模擬排課！","手邊有用不到的教科書嗎?<br>快登入使用二手書平台!"];
-		$("#brief-intro").html(brief_intro[Math.floor(Math.random()*3)]);
-		var aa = ['url(<%=asset_path "bg6.jpg"%>)','url(<%=asset_path "bg5.jpg"%>)','url(<%=asset_path "bg3.jpg"%>)'];
-		var t1=0;
-		setInterval(function() {
-		$('.bg1').fadeOut(6000, function() 
-		{
-				
-				$('.bg1').css('background-image', aa[++t1]).fadeIn(3000);
-				//t1++;
-				if(t1 == 3) t1 = 0;
-			});
-		},6000)
+	$("h1").fitText(1.2, {
+		minFontSize: '35px',
+		maxFontSize: '65px'
+	});
+	var brief_intro =["即將畢業，給自己一個安心，<br>快登入使用算學分功能！","機會是留給有準備的人，<br>快登入使用模擬排課！","手邊有用不到的教科書嗎？<br>快登入使用二手書平台！","想宣傳精彩的活動嗎？<br>快登入使用活動 BAR！"];
+	$("#brief-intro").html(brief_intro[Math.floor(Math.random()*brief_intro.length)]);
+	var bgs = ['url(<%=asset_path "new-index/bg1.jpg"%>)','url(<%=asset_path "new-index/bg2.jpg"%>)','url(<%=asset_path "new-index/bg3.jpg"%>)'];
+	var t1=0;
+	$('.bg-image').css('background-image', bgs[t1]);
+	setInterval(function() {
+		$('.bg-image').fadeOut(3000, function(){
+			t1++;
+			if(t1 == bgs.length) t1 = 0;
+			$('.bg-image').css('background-image', bgs[t1]).fadeIn(3000);
+		});
+	},12000);
 
 });
 
 
 function re_win(){	//need fix
-
 	if(window.innerWidth<=768)
 	{
 		$(".header-right").css("display","none");
@@ -208,13 +235,9 @@ function re_win(){	//need fix
 		
 		$(".header-content-inner").css("margin-top","12%");
 
-		
 	}
 	else
 	{
-
-		
-
 		$(".header-content-inner").css("margin-top","1%")
 		$(".tabs-block").css({'display':'block'})
 		$(".header-right").css("display","block");

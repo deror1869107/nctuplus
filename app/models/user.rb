@@ -25,8 +25,9 @@ class User < ActiveRecord::Base
   
 	has_many :events
 	has_many :attendances
+	has_many :event_follows
 	has_many :attend_events, :through=> :attendances, :source=> :event
-
+	has_many :follow_events, :through=> :attend_events, :source=> :event
 
   has_many :user_coursemapships, :dependent=> :destroy
   has_many :course_maps, :through=> :user_coursemapships
@@ -39,6 +40,7 @@ class User < ActiveRecord::Base
   #timetable collection
   has_many :user_collections, :dependent=> :destroy
   
+  has_many :bulletins
 # for admin user search (no use now)
   ransacker :studentId do |user|
   Arel.sql('auth_e3s.student_id')
