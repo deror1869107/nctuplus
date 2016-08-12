@@ -23,6 +23,11 @@ class CoursesController < ApplicationController
 			@q= CourseDetail.search({:cos_type_cont_any=>["通識","外語"], :semester_id_eq=>Semester::LAST.id, :time_cont_any=>JSON.parse(params[:timeslot_search])})
 		elsif !params[:custom_search].blank? #search by text
 			@q = CourseDetail.search_by_q_and_text(params[:q],params[:custom_search])
+		elsif !params[:required_search].blank? #search required courses
+      dept_id = current_user.department_id
+      grade = (Semester::LAST.year - current_user.year + 1).to_s
+      puts grade
+      @q=CourseDetail.search({:semester_id_eq=>Semester::LAST.id, :department_id_eq=>dept_id, :cos_type_eq=>"必修", :grade_eq=>grade})
 		else
 			if params[:q].blank?
 				@q=CourseDetail.search({:id_in=>[0]})
