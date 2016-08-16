@@ -24,9 +24,8 @@ class CoursesController < ApplicationController
 		elsif !params[:custom_search].blank? #search by text
 			@q = CourseDetail.search_by_q_and_text(params[:q],params[:custom_search])
 		elsif !params[:required_search].blank? #search required courses
-      dept_id = current_user.department_id
-      grade = (Semester::LAST.year - current_user.year + 1).to_s
-      @q=CourseDetail.search({:semester_id_eq=>Semester::LAST.id, :department_id_eq=>dept_id, :cos_type_eq=>"必修", :grade_eq=>grade})
+      c_ids = find_required_courses
+      @q = CourseDetail.search(:semester_id_eq=>Semester::LAST.id, :course_id_in=>c_ids)
 		else
 			if params[:q].blank?
 				@q=CourseDetail.search({:id_in=>[0]})
@@ -34,7 +33,7 @@ class CoursesController < ApplicationController
 				@q=CourseDetail.search(params[:q])				
 			end
 		end
-		cds=@q.result(distinct: true).includes(:course, :course_teachership, :semester, :department)
+    cds=@q.result(distinct: true).includes(:course, :course_teachership, :semester, :department)
 		@result={
 			:view_type=>"simulation",
 			:use_type=>"add",
@@ -168,5 +167,13 @@ class CoursesController < ApplicationController
 		params.require(:course).permit(:ch_name, :eng_name, :department_id)
   end
   
+  def find_required_courses_id
+    grade = (Semester::LAST.year - current_user.year + 1).to_s
+    half = Semester::LAST.half.to_s
+    cf_ids = CmCfship.where(:course_map_id => current_user.course_map_ids).distinct.pluck(:course_field_id)
+    c_ids, cg_ids = CourseFieldList.includes(:course_field).where(:grade => grade, :half => half, :course_fields => {:id => cfids, :field_type => 1 }).distinct.pluck(:course_id, :course_group_id).transpose.map { |i| i.compact }
+    c_ids += CourseGroupList.includes(:course_group).where(:course_group_id => cg_ids ).distinct.pluck(:course_id) << 0 #防止cid裡沒有資料
+    return c_ids
+  end
   
 end
